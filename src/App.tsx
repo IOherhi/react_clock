@@ -8,63 +8,53 @@ function getRandomName(): string {
   return `Clock-${value}`;
 }
 
-
 export const App: React.FC = () => {
-  const [randomName, setRandomName] = useState('Clock-0')
-  const [currentTime, setCurrentTime] = useState(null)
+  const [randomName, setRandomName] = useState('Clock-0');
+  const [currentTime, setCurrentTime] = useState<string | null>(null);
   const [currentSecond, setCurrentSecond] = useState<number>(0);
   const [deleteHasClock, setdeleteHasClock] = useState<boolean>(true);
 
-
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSecond(prev => prev + 1);
-    }, 1000);
-
     const timer02 = setInterval(() => {
-      setRandomName(getRandomName)
+      setRandomName(getRandomName);
     }, 3300);
 
+    window.addEventListener('click', () => {
+      setdeleteHasClock(false);
+    });
 
-    window.addEventListener('click' , () => {
-      setdeleteHasClock(false)
-    })
-
-
-    window.addEventListener('contextmenu' , (e) => {
-      e.preventDefault()
-      setdeleteHasClock(true)
-    })
-
+    window.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      setdeleteHasClock(true);
+    });
 
     return () => {
-      clearInterval(timer)
-      clearInterval(timer02)
+      clearInterval(timer02);
     };
   }, []);
 
-
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSecond(prev => prev + 1);
     }, 1000);
 
-
     return () => clearInterval(timer);
   }, []);
-
-
 
   useEffect(() => {
     const date = new Date();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    const seconds = date.getSeconds()
-    setCurrentTime(`${hours}:${minutes}:${seconds}`)
+    const seconds = date.getSeconds();
+
+    setCurrentTime(`${hours}:${minutes}:${seconds}`);
   }, [currentSecond]);
 
-
-    return (
-      <Clock clockName={randomName} currentTime={currentTime} deleteHasClock={deleteHasClock}/>
-    );
+  return (
+    <Clock
+      clockName={randomName}
+      currentTime={currentTime}
+      deleteHasClock={deleteHasClock}
+    />
+  );
 };
